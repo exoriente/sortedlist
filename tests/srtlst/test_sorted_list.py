@@ -1,4 +1,4 @@
-from sortedlist import SortedList
+from srtlst import SortedList
 from pytest import raises
 
 

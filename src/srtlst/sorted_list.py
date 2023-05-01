@@ -3,7 +3,7 @@ from bisect import insort_right, insort_left, bisect_right, bisect_left
 from collections.abc import Iterable
 from typing import TypeVar, Generic, Any, Iterator, SupportsIndex
 
-from sortedlist.protocols import _SupportsLT
+from srtlst.protocols import _SupportsLT
 
 _S = TypeVar("_S", bound=_SupportsLT)
 _T = TypeVar("_T")

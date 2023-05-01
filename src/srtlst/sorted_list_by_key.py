@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Generic, Iterable, Callable, SupportsIndex, TypeVar
 
-from sortedlist.sorted_list import SortedList
-from sortedlist.protocols import _SupportsLT
+from srtlst.sorted_list import SortedList
+from srtlst.protocols import _SupportsLT
 
 _T = TypeVar("_T")
 _S = TypeVar("_S", bound=_SupportsLT)

@@ -2,7 +2,7 @@ from collections.abc import Sequence, Callable
 
 from pytest import fixture
 
-from sortedlist import SortedListByKey
+from srtlst import SortedListByKey
 
 
 @fixture(scope="module")

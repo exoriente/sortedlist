@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "sortedlist"
+name = "srtlst"
 version = "0.1.0"
-description = "a simple sorted list"
+description = "a simple, type checkable, sorted list"
 authors = ["exoriente"]
 license = "MIT"
 
