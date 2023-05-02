@@ -217,8 +217,12 @@ def test_mul() -> None:
     assert SortedList([3, 2, 1]) * 2 == [1, 2, 3, 1, 2, 3]
 
 
-def test_contains() -> None:
+def test_contains_true() -> None:
     assert 2 in SortedList([3, 2, 1])
+
+
+def test_contains_false() -> None:
+    assert 4 not in SortedList([3, 2, 1])
 
 
 def test_iadd() -> None:
