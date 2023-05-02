@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "srtlst"
-version = "0.1.0"
+version = "0.1.1"
 description = "a simple, type checkable, sorted list"
 authors = ["exoriente"]
 license = "MIT"
