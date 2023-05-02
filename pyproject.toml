@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "a simple, type checkable, sorted list"
 authors = ["exoriente"]
 license = "MIT"
+readme = "readme.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
