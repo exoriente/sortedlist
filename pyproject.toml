@@ -6,7 +6,7 @@ authors = ["exoriente"]
 license = "MIT"
 readme = "readme.md"
 repository = "https://github.com/exoriente/srtlst"
-keywords = ["sorted", "list", "simple", "container", "typed", "bisect", "typed", "mypy"]
+keywords = ["sorted", "list", "simple", "container", "sorting", "bisect", "typed", "mypy"]
 classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",

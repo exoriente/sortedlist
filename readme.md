@@ -43,7 +43,7 @@ and supply a function to sort it (just like with `sorted()`):
 [3, 1, 2, 4]
 ```
 
-`SortedListByKey` behaves like a `SortedList` in all other ways, and indeed, inherits from it.
+`SortedListByKey` behaves like a `SortedList` in all other ways, and indeed inherits from it.
 However, when type checking, a `SortedList` only accepts values for which a less-than (`<`) method is defined (`__lt__()`).
 
 `SortedListByKey` accepts any type of object, as long as an appropriate key function is provided.
@@ -70,7 +70,7 @@ s: SortedList[int] = SortedList([3, 2, 1])
 
 ### performance
 
-This library aims to provide a simple sorted list without any dependencies, that is ready for use.
+This library aims to provide a simple sorted list without any dependencies which is ready for use.
 Some of the list operations are reimplemented to take advantage of the list's sortedness using Python's standard `bisect` library.
 
 This library should suit your needs if you just want to keep stuff sorted, without having to implement the bookkeeping yourself.
