@@ -1,10 +1,22 @@
 [tool.poetry]
 name = "srtlst"
 version = "0.1.2"
-description = "a simple, type checkable, sorted list"
+description = "a simple, generically typed-hinted, sorted list"
 authors = ["exoriente"]
 license = "MIT"
 readme = "readme.md"
+repository = "https://github.com/exoriente/srtlst"
+keywords = ["sorted", "list", "simple", "container", "typed", "bisect", "typed", "mypy"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed"
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
