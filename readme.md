@@ -1,6 +1,9 @@
 # srtlst
 
-_a simple, generically typed-hinted, sorted list_
+_a simple, generically type-annotated, sorted list_
+
+![python_version](https://img.shields.io/pypi/pyversions/srtlst)
+[![mypy_checked](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 
 ### usage
 

@@ -1,11 +1,31 @@
+# python
 __pycache__/
+
+# ruff
 /.ruff_cache/
+
+# mypy
 /.mypy_cache/
+
+# pytest
 .pytest_cache/
+
+# coverage
 /.coverage
 /htmlcov/
+/coverage.json
+
+# tox
 /.tox/
+
+# poetry
 /dist/
+
+# pyenv
 /.python-version
+
+# direnv
 /.envrc
+
+# pycharm
 /.idea/
