@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from srtlst.collections_abc import Callable
 
 from srtlst.bisect import bisect_left, bisect_right
 
