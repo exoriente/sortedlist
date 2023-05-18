@@ -19,7 +19,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.0.262"
@@ -38,4 +38,8 @@ build-backend = "poetry.core.masonry.api"
 strict = true
 
 [tool.coverage.report]
-exclude_lines = ["class .*\\bProtocol\\):"]
+exclude_lines = [
+    "class .*\\bProtocol\\):",
+    "^\\s*\\.\\.\\.\\s*$",
+    "^\\s*from\\s"
+]

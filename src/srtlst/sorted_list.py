@@ -1,25 +1,28 @@
 from __future__ import annotations
-from bisect import insort_right, insort_left, bisect_right, bisect_left
-from collections.abc import Iterable
-from typing import TypeVar, Generic, Any, Iterator, SupportsIndex
 
+from srtlst.collections_abc import Iterable, Sequence
+
+from typing import TypeVar, Any, Iterator, SupportsIndex, overload, cast
+
+from srtlst.bisect import bisect_right, bisect_left
 from srtlst.protocols import _SupportsLT
 
 _S = TypeVar("_S", bound=_SupportsLT)
 _T = TypeVar("_T")
 
 
-class SortedList(Generic[_S]):
+class SortedList(Sequence[_S]):
     """
     a list that stays sorted under all operations
     """
 
-    def __init__(self, seq: Iterable[_S] = (), /):
+    def __init__(self, seq: Iterable[_S] = (), /, *, reverse: bool = False):
         """
         create a new sorted list from an optional iterable of values
         """
         self._key = lambda x: x
-        self._list = list(sorted(seq, key=self._key))
+        self._reverse = reverse
+        self._list = list(sorted(seq, key=self._key, reverse=self._reverse))
 
     def add_right(self, value: _S) -> None:
         """
@@ -27,7 +30,10 @@ class SortedList(Generic[_S]):
         (to the right of existing duplicate values,
         or of items with the same sort key value)
         """
-        insort_right(self._list, value, key=self._key)
+        position = bisect_right(
+            self._list, self._key(value), key=self._key, reverse=self._reverse
+        )
+        self._list.insert(position, value)
 
     def add_left(self, value: _S) -> None:
         """
@@ -35,7 +41,10 @@ class SortedList(Generic[_S]):
         (to the left of existing duplicate values,
         or of items with the same sort key value)
         """
-        insort_left(self._list, value, key=self._key)
+        position = bisect_left(
+            self._list, self._key(value), key=self._key, reverse=self._reverse
+        )
+        self._list.insert(position, value)
 
     add = add_right
 
@@ -43,7 +52,7 @@ class SortedList(Generic[_S]):
         """
         remove a value from the list (if multiple exists, remove the right-most value)
         """
-        position = bisect_right(self._list, value, key=self._key)
+        position = bisect_right(self._list, value, key=self._key, reverse=self._reverse)
         value_key = self._key(value)
         for i in reversed(range(position)):
             if self._key(self._list[i]) != value_key:
@@ -57,7 +66,7 @@ class SortedList(Generic[_S]):
         """
         remove a value from the list (if multiple exists, remove the left-most value)
         """
-        position = bisect_left(self._list, value, key=self._key)
+        position = bisect_left(self._list, value, key=self._key, reverse=self._reverse)
         value_key = self._key(value)
         for i in range(position, len(self._list)):
             if self._key(self._list[i]) != value_key:
@@ -177,6 +186,14 @@ class SortedList(Generic[_S]):
         """
         return len(self._list)
 
+    @overload
+    def __getitem__(self, index: int, /) -> _S:
+        ...
+
+    @overload
+    def __getitem__(self, index: slice, /) -> SortedList[_S]:
+        ...
+
     def __getitem__(self, index: SupportsIndex | slice) -> SortedList[_S] | _S:
         """
         return the value at position index,
@@ -206,12 +223,20 @@ class SortedList(Generic[_S]):
         """
         return self._list * other
 
-    def __contains__(self, item: _S) -> bool:
+    def __contains__(self, item: object) -> bool:
         """
         return true if item in self, false otherwise
+
+        (will fall back on list.__contains__ if item is not comparable to
+        contents of SortedList)
         """
-        position = bisect_left(self._list, item, key=self._key)
-        return position != len(self._list)
+        try:
+            position = bisect_left(
+                self._list, cast(_S, item), key=self._key, reverse=self._reverse
+            )
+            return position != len(self._list)
+        except TypeError:
+            return item in self._list
 
     def __iadd__(self, other: Iterable[_S]) -> SortedList[_S]:  # type:ignore[misc]
         """
@@ -243,7 +268,9 @@ class SortedList(Generic[_S]):
         lo = 0 if start is None else start
         hi = len(self._list) if end is None else end
 
-        position = bisect_left(self._list, x, lo, hi, key=self._key)
+        position = bisect_left(
+            self._list, x, key=self._key, reverse=self._reverse, lo=lo, hi=hi
+        )
 
         if position < hi and self._list[position] == x:
             return position
@@ -254,7 +281,7 @@ class SortedList(Generic[_S]):
         """
         return the number of occurrences of x in the list
         """
-        position = bisect_left(self._list, x, key=self._key)
+        position = bisect_left(self._list, x, key=self._key, reverse=self._reverse)
         count = 0
         for item in self._list[position:]:
             if item == x:

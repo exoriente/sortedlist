@@ -1,9 +1,22 @@
 from srtlst import SortedList
 from pytest import raises
 
+from srtlst.collections_abc import (
+    Collection,
+    Container,
+    Iterable,
+    Reversible,
+    Sequence,
+    Sized,
+)
+
 
 def test_creation_with_iterable() -> None:
     assert SortedList([3, 2, 1]) == [1, 2, 3]
+
+
+def test_creation_with_iterable_reverse() -> None:
+    assert SortedList([1, 2, 3], reverse=True) == [3, 2, 1]
 
 
 def test_add() -> None:
@@ -13,6 +26,15 @@ def test_add() -> None:
     s.add(2)
 
     assert s == [1, 2, 3]
+
+
+def test_add_reverse() -> None:
+    s: SortedList[int] = SortedList(reverse=True)
+    s.add(3)
+    s.add(1)
+    s.add(2)
+
+    assert s == [3, 2, 1]
 
 
 def test_add_right() -> None:
@@ -225,6 +247,18 @@ def test_contains_false() -> None:
     assert 4 not in SortedList([3, 2, 1])
 
 
+def test_contains_bad_type() -> None:
+    assert "a" not in SortedList([3, 2, 1])
+
+
+def test_contains_weird_type() -> None:
+    class C:
+        def __eq__(self, other: object) -> bool:
+            return other == 2
+
+    assert C() in SortedList([3, 2, 1])
+
+
 def test_iadd() -> None:
     s = SortedList([3, 2, 1])
     s += [6, 5, 4]
@@ -246,12 +280,36 @@ def test_index() -> None:
     assert s.index(3) == 2
 
 
+def test_index_subsequence() -> None:
+    s = SortedList([5, 4, 3, 2, 1])
+    assert s.index(3, 1, 4) == 2
+
+
 def test_index_error() -> None:
     s = SortedList([3, 2, 1])
     with raises(ValueError):
         s.index(4)
 
 
+def test_index_subsequence_error() -> None:
+    s = SortedList([5, 4, 3, 2, 1])
+    with raises(ValueError):
+        s.index(4, 1, 3)
+
+
 def test_count() -> None:
     s = SortedList([3, 3, 3, 2, 2, 1])
     assert s.count(2) == 2
+
+
+def test_is_sequence() -> None:
+    assert issubclass(SortedList, Sequence)
+
+
+def test_is_collection_inheritance() -> None:
+    assert issubclass(SortedList, Sequence)
+    assert issubclass(SortedList, Collection)
+    assert issubclass(SortedList, Sized)
+    assert issubclass(SortedList, Reversible)
+    assert issubclass(SortedList, Iterable)
+    assert issubclass(SortedList, Container)
