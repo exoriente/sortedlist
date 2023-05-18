@@ -52,3 +52,7 @@ def test_copy() -> None:
     assert a == b
     assert type(b) == SortedListByKey
     assert a is not b
+
+
+def test_is_sequence() -> None:
+    assert issubclass(SortedListByKey, Sequence)

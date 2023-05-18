@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from srtlst.collections_abc import Iterable
+from srtlst.collections_abc import Iterable, Sequence
 
-from typing import TypeVar, Generic, Any, Iterator, SupportsIndex
+from typing import TypeVar, Any, Iterator, SupportsIndex, overload
 
 from srtlst.bisect import bisect_right, bisect_left
 from srtlst.protocols import _SupportsLT
@@ -11,7 +11,7 @@ _S = TypeVar("_S", bound=_SupportsLT)
 _T = TypeVar("_T")
 
 
-class SortedList(Generic[_S]):
+class SortedList(Sequence[_S]):
     """
     a list that stays sorted under all operations
     """
@@ -186,6 +186,14 @@ class SortedList(Generic[_S]):
         """
         return len(self._list)
 
+    @overload
+    def __getitem__(self, index: int, /) -> _S:
+        ...
+
+    @overload
+    def __getitem__(self, index: slice, /) -> SortedList[_S]:
+        ...
+
     def __getitem__(self, index: SupportsIndex | slice) -> SortedList[_S] | _S:
         """
         return the value at position index,
@@ -215,12 +223,15 @@ class SortedList(Generic[_S]):
         """
         return self._list * other
 
-    def __contains__(self, item: _S) -> bool:
+    def __contains__(self, item: object) -> bool:
         """
         return true if item in self, false otherwise
         """
-        position = bisect_left(self._list, item, key=self._key, reverse=self._reverse)
-        return position != len(self._list)
+        try:
+            position = bisect_left(self._list, item, key=self._key, reverse=self._reverse)
+            return position != len(self._list)
+        except TypeError:
+            return False
 
     def __iadd__(self, other: Iterable[_S]) -> SortedList[_S]:  # type:ignore[misc]
         """

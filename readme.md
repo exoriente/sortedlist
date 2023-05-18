@@ -35,6 +35,15 @@ You can use `add()` instead of `insert()` or `append()`:
 [1, 2, 3, 3, 5]
 ```
 
+If you need your data to be sorted in descending order use the optional `reverse` parameter:
+
+```python
+>>> s = SortedList([1, 2, 3], reverse=True)
+>>> s.add(4)
+>>> print(s)
+[4, 3, 2, 1]
+```
+
 If your data is not inherently sortable, or you want to sort it in a non-default way, you can use `SortedListByKey`
 and supply a function to sort it (just like with `sorted()`):
 

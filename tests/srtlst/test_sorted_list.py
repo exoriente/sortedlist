@@ -1,6 +1,8 @@
 from srtlst import SortedList
 from pytest import raises
 
+from srtlst.collections_abc import Sequence
+
 
 def test_creation_with_iterable() -> None:
     assert SortedList([3, 2, 1]) == [1, 2, 3]
@@ -279,3 +281,7 @@ def test_index_subsequence_error() -> None:
 def test_count() -> None:
     s = SortedList([3, 3, 3, 2, 2, 1])
     assert s.count(2) == 2
+
+
+def test_is_sequence() -> None:
+    assert issubclass(SortedList, Sequence)
