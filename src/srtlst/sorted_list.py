@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from srtlst.collections_abc import Iterable, Sequence
 
-from typing import TypeVar, Any, Iterator, SupportsIndex, overload
+from typing import TypeVar, Any, Iterator, SupportsIndex, overload, cast
 
 from srtlst.bisect import bisect_right, bisect_left
 from srtlst.protocols import _SupportsLT
@@ -226,12 +226,17 @@ class SortedList(Sequence[_S]):
     def __contains__(self, item: object) -> bool:
         """
         return true if item in self, false otherwise
+
+        (will fall back on list.__contains__ if item is not comparable to
+        contents of SortedList)
         """
         try:
-            position = bisect_left(self._list, item, key=self._key, reverse=self._reverse)
+            position = bisect_left(
+                self._list, cast(_S, item), key=self._key, reverse=self._reverse
+            )
             return position != len(self._list)
         except TypeError:
-            return False
+            return item in self._list
 
     def __iadd__(self, other: Iterable[_S]) -> SortedList[_S]:  # type:ignore[misc]
         """

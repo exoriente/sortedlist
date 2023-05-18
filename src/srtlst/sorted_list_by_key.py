@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Generic, Iterable, Callable, SupportsIndex, TypeVar
+from typing import Generic, Iterable, Callable, SupportsIndex, TypeVar, overload
 
 from srtlst.sorted_list import SortedList
 from srtlst.protocols import _SupportsLT
@@ -29,6 +29,14 @@ class SortedListByKey(SortedList[_T], Generic[_T]):  # type:ignore[type-var]
         self._key = key
         self._reverse = reverse
         self._list = list(sorted(seq, key=self._key, reverse=self._reverse))
+
+    @overload
+    def __getitem__(self, index: int, /) -> _T:
+        ...
+
+    @overload
+    def __getitem__(self, index: slice) -> SortedListByKey[_T]:
+        ...
 
     def __getitem__(
         self, index: SupportsIndex | slice
